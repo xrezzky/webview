@@ -1,4 +1,4 @@
-name: Build APK
+name: Build XRZ Chat APK
 
 on:
   workflow_dispatch:
@@ -17,16 +17,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Android SDK
+      - name: Setup Android
         uses: android-actions/setup-android@v3
 
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
       - name: Build APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease
+        run: gradle assembleRelease
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: xrezzky-webview-apk
+          name: XRZ-Chat
           path: app/build/outputs/apk/release/*.apk
